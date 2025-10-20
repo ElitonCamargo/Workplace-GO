@@ -1,0 +1,26 @@
+CREATE DATABASE IF NOT EXISTS sistema_WP;
+USE sistema_WP;
+-- Remove as tabelas se já existirem (ordem importa por causa das FKs)
+
+DROP TABLE IF EXISTS Sessoes;
+DROP TABLE IF EXISTS Usuarios;
+CREATE TABLE IF NOT EXISTS Usuarios (
+    id BIGINT unsigned AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    createdAt datetime DEFAULT CURRENT_TIMESTAMP,
+    updatedAt datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS Sessoes (
+  usuario BIGINT UNSIGNED NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  validade datetime DEFAULT NULL,
+  createdAt timestamp DEFAULT CURRENT_TIMESTAMP,
+  updatedAt timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (usuario),
+  FOREIGN KEY (usuario) REFERENCES Usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
